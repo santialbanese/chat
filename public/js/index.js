@@ -18,10 +18,15 @@ Swal.fire({
     socket.emit("newUser", user);
 }); 
 
+function scrollToBottom() {
+    messageLog.scrollTop = messageLog.scrollHeight;
+}
+
 message.addEventListener("keyup", (data) => { 
     if(data.key === "Enter" && message.value.trim().length > 0){
         socket.emit("message", {user: user, mensaje: message.value})
         message.value = "";
+        scrollToBottom();
     }
 }) 
 
@@ -29,6 +34,7 @@ boton.addEventListener("click", (data) => {
     if(message.value.trim().length > 0){
         socket.emit("message", {user: user, mensaje: message.value})
         message.value = ""; 
+        scrollToBottom();
     }
 })
    
@@ -40,6 +46,7 @@ socket.on("messageLog", (data) => {
     });
 
     messageLog.innerHTML = messages;
+    scrollToBottom();
 })   
 
 //NUEVO USUARIO 
