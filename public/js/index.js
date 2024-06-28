@@ -2,6 +2,7 @@ const socket = io();
 
 let message = document.getElementById("message");
 let messageLog = document.getElementById("messageLog");
+let boton = document.getElementById("button");
 let user;
 
 Swal.fire({
@@ -20,9 +21,17 @@ Swal.fire({
 message.addEventListener("keyup", (data) => { 
     if(data.key === "Enter" && message.value.trim().length > 0){
         socket.emit("message", {user: user, mensaje: message.value})
+        message.value = "";
+    }
+}) 
+
+boton.addEventListener("click", (data) => { 
+    if(message.value.trim().length > 0){
+        socket.emit("message", {user: user, mensaje: message.value})
+        message.value = ""; 
     }
 })
-
+   
 socket.on("messageLog", (data) => { 
     let messages = ""; 
 
@@ -31,9 +40,9 @@ socket.on("messageLog", (data) => {
     });
 
     messageLog.innerHTML = messages;
-}) 
+})   
 
-//NUEVO USUARIO
+//NUEVO USUARIO 
 socket.on("newUser", (data) => {
     Swal.fire({
       text: `Se conectó ${data}`,

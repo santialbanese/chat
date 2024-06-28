@@ -1,13 +1,16 @@
-<h1>Chat</h1>
+<body>
+  <h1>Chat</h1>
 
-<div>
-  <input type="text" id="message" />
+<div class="input-container">
+  <input type="text" id="message" placeholder="Escribe tu mensaje..." />
+  <button id="button" type="submit">Enviar</button>
 </div>
 
-<div>
+<div class="mensajes">
   <p id="messageLog"></p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
+</body>
