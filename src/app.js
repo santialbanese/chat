@@ -38,4 +38,8 @@ io.on("connection", (socket) => {
 
         io.emit("messageLog", messages)
     })
+    //disconnet es un evento de socket.io
+    socket.on('disconnect', () => {
+        socket.broadcast.emit('userDisconnected', 'Un usuario se ha desconectado');
+    });
 })
