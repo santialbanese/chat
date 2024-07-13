@@ -3,6 +3,7 @@ const socket = io();
 let message = document.getElementById("message");
 let messageLog = document.getElementById("messageLog");
 let boton = document.getElementById("button");
+let escribiendo = document.getElementById("estaEscribiendo")
 let user;
 let userIdentificado = false; 
 let nuevoUsuarioConectado = null;
@@ -27,35 +28,63 @@ Swal.fire({
     }
 }); 
 
-function scrollToBottom() {
-    messageLog.scrollTop = messageLog.scrollHeight;
-}
+
+
+
 
 message.addEventListener("keyup", (data) => { 
     if(data.key === "Enter" && message.value.trim().length > 0){
         socket.emit("message", {user: user, mensaje: message.value})
         message.value = "";
-        scrollToBottom();
     }
 }) 
 
-boton.addEventListener("click", (data) => { 
+boton.addEventListener("click", () => { 
     if(message.value.trim().length > 0){
         socket.emit("message", {user: user, mensaje: message.value})
         message.value = ""; 
-        scrollToBottom();
     }
 })
-   
+
+
+
+
+message.addEventListener("input", () => {
+    socket.emit("typing", user);
+});
+
+let timeout;
+message.addEventListener("input", () => {
+    socket.emit("typing", user);
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        socket.emit("stopTyping", user);
+    }, 1000);
+});
+
+socket.on("typing", (data) => {
+    escribiendo.innerText = `${data} está escribiendo...`;
+});
+
+socket.on("stopTyping", (data) => {
+    escribiendo.innerText = "";
+});
+
+
+
+
 socket.on("messageLog", (data) => { 
     let messages = ""; 
 
     data.forEach((userMessage) => {
+        if(userMessage.user === user){ 
+            const msj = "Yo"
+            messages = messages + ` ${msj} : ${userMessage.mensaje} </br>`
+        }else
         messages = messages + ` ${userMessage.user} : ${userMessage.mensaje} </br>`
     }); 
 
     messageLog.innerHTML = messages;
-    scrollToBottom();
 })   
 
 //NUEVO USUARIO 
@@ -66,6 +95,10 @@ socket.on("newUser", (data) => {
         nuevoUsuarioConectado = data; 
     }
 });
+
+
+
+
 
 const notification = (data) => { 
     Swal.fire({
@@ -84,6 +117,10 @@ socket.on("userDisconnected", (data) => {
         usuarioAbandono = data; 
     }
 });
+
+
+
+
 
 const notificationSalir = (data) => { 
     Swal.fire({
