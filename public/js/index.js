@@ -3,11 +3,13 @@ const socket = io();
 let message = document.getElementById("message");
 let messageLog = document.getElementById("messageLog");
 let boton = document.getElementById("button");
-let escribiendo = document.getElementById("estaEscribiendo")
+let escribiendo = document.getElementById("estaEscribiendo");
+let linea = document.getElementById("enLinea");
 let user;
 let userIdentificado = false; 
 let nuevoUsuarioConectado = null;
 let usuarioAbandono = null;
+
 
 Swal.fire({
     title: "Indentificate",
@@ -17,7 +19,7 @@ Swal.fire({
       return !value && "Por favor ingrese el nombre de usuario";
     },
     allowOutsideClick: false,
-  }).then((result) => {
+  }).then((result) => { 
     user = result.value;
     userIdentificado = true;
     socket.emit("newUser", user);
@@ -26,9 +28,7 @@ Swal.fire({
         nuevoUsuarioConectado = null;
         usuarioAbandono = null;
     }
-}); 
-
-
+});  
 
 
 
@@ -46,6 +46,15 @@ boton.addEventListener("click", () => {
     }
 })
 
+
+
+socket.on("conectados", (arrayConectados) => { 
+    let online = "";
+    arrayConectados.forEach(element => {
+        online = online + ` ${element.user} </br>`
+    });
+    linea.innerHTML = online;
+})
 
 
 
@@ -73,6 +82,8 @@ socket.on("stopTyping", (data) => {
 
 
 
+  
+
 socket.on("messageLog", (data) => { 
     let messages = ""; 
 
@@ -86,6 +97,9 @@ socket.on("messageLog", (data) => {
 
     messageLog.innerHTML = messages;
 })   
+
+
+
 
 //NUEVO USUARIO 
 socket.on("newUser", (data) => {
@@ -109,6 +123,8 @@ const notification = (data) => {
     });
 }
 //usuario desconectado
+
+
 
 socket.on("userDisconnected", (data) => {
     if (userIdentificado) {

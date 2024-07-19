@@ -9,7 +9,7 @@ body {
 }
 h1 {
     text-align: center;
-    background-color: #d32f2f;
+    background-color: #DC3545;
     color: white;
     margin: 0;
     padding: 10px;
@@ -91,29 +91,52 @@ h1 {
   }
   
 #sendButton:hover {
-    background-color: #d32f2f;
+    background-color: #DC3545;
 }
 
 #button {
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
-    background-color: #d32f2f;
+    background-color: #DC3545;
     color: white;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 #button:hover {
-    background-color: #d32f2f;
+    background-color: #DC3545;
 }
-#estaEscribiendo{
-    font-size: 0.875rem;  
-    color: #555; 
-    font-style: italic; 
+
+
+
+
+
+#estaEscribiendo {
+    font-size: 0.875rem;
+    color: #555;
+    font-style: italic;
     text-align: center;
-    margin: 0;  
-    padding: 5px; 
+    margin: 0;
+    padding: 5px;
     background-color: #f0f0f0;
     border-radius: 5px;
+}
 
+.header {
+    background-color: #DC3545;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+}
+
+.header h1 {
+    background-color: #DC3545;
+    margin: 0;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #DC3545; 
 }
